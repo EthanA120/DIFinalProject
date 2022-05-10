@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/login_register.css') }}">
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section id="FormSide">
+            <h1>Log In</h1>
+            <form method="post">
+                {{ form.hidden_tag() }}
+
+                {{ form.email(class="inputBox", type="email", placeholder="Email address") }}
+                {{ form.password(class="inputBox", type="password", placeholder="Password") }}
+                <div id="loginOpts">
+                    <span>
+                        {{ form.remember(type="checkbox") }}
+                        <label for="rememberMe">Remember me</label>
+                    </span>
+                    <a href="" style="text-decoration: none;">forgot password?</a>
+                </div>
+                {{ form.submit(value="Login") }}
+            </form>
+        </section>
+
+        <section id="Alternate">
+            <i class="fas fa-user-plus"></i>
+            <h1>Hello, freind!</h1>
+            <h2>Sign up now and enjoy are games for free</h2>
+            <a href="{{ url_for('register') }}">Register <i class="far fa-arrow-alt-circle-right"></i></a>
+        </section>
+    </main>
+{% endblock %}

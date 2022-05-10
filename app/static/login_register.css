@@ -1,0 +1,110 @@
+main{
+    height: 95vh;
+    width: 60vw;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 500px;
+    margin: 0 auto;
+}
+
+#FormSide, #Alternate{
+    width: 50%;
+    height: 80%;
+    min-height: 500px;
+    max-height: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#FormSide{
+    float: left;
+    width: 50%;
+    background-color: #FAFAFA;
+    text-align: center;
+}
+
+#FormSide h1{
+    font-size: 45px;
+    margin: 0;
+}
+
+#loginOpts{
+    width: 100%;
+    color: #8F8F8F;
+}
+
+#loginOpts span{float: left;}
+#loginOpts span input{margin: auto 0;}
+
+#loginOpts a{
+    float: right;
+    color: #8F8F8F;
+}
+
+input[value="Register"], input[value="Login"]{
+    width: 100%;
+    border: none;
+    border-radius: 2px;
+    padding: 10px 0;
+    color: white;
+    background-color: rgb(45, 155, 237);
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 20px;
+}
+
+
+#Social{
+    width: 70%;
+    font-size: 25px;
+    margin: 0 auto 50px auto;
+}
+
+#Social a i{width: 25px;}
+#Social a{color: #8F8F8F;}
+#Social a:not(a:last-child){float: left; margin-right: calc(30% - 25px);}
+
+#copyright{color: #8F8F8F;}
+
+#Alternate{
+    width: 50%;
+    text-align: center;
+    background-image: linear-gradient(to bottom right, rgb(0, 0, 0) , rgb(0, 201, 251));
+    color: white;
+}
+
+#Alternate > i:first-child{
+    font-size: 7em;
+}
+
+h1{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 3em;
+}
+
+h2{
+    text-align: center;
+    font-size: 20px;
+    margin: 0 10% 50px 10%;
+}
+
+#Alternate a, #Alternate a > i:last-child{
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+    align-self: center;
+}
+
+#Alternate a{
+    width: 200px;
+    transform: translateY(5px);
+    padding: 10px 25px;
+    border: white solid 3px;
+    border-radius: 45px;
+}
+
+@media all and (max-width: 1000px){
+    main{width: 100vw;}
+ }
