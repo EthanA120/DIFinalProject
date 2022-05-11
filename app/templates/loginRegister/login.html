@@ -12,11 +12,11 @@
             <form method="post">
                 {{ form.hidden_tag() }}
 
-                {{ form.email(class="inputBox", type="email", placeholder="Email address") }}
-                {{ form.password(class="inputBox", type="password", placeholder="Password") }}
+                {{ form.email(class="form-control mb-3", type="email", placeholder="Email address") }}
+                {{ form.password(class="form-control mb-3", type="password", placeholder="Password") }}
                 <div id="loginOpts">
                     <span>
-                        {{ form.remember(type="checkbox") }}
+                        {{ form.remember_me(type="checkbox") }}
                         <label for="rememberMe">Remember me</label>
                     </span>
                     <a href="" style="text-decoration: none;">forgot password?</a>

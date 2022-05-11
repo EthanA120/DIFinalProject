@@ -26,19 +26,23 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             {% set endpoint = request.url.split('/') %}
                             <a class="nav-link {% if endpoint[-1] == "" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('index') }}">Home</a>
                             <a class="nav-link {% if endpoint[-1] == "register" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('register') }}">Register</a>
-                            <a class="nav-link {% if endpoint[-1] == "login" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login') }}">Login</a>
+                            {% if current_user.is_anonymous %}
+                                <a class="nav-link {% if endpoint[-1] == "login" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login') }}">Login</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
 
-        <div class="w-75 m-auto">
+        <div id="Alert" class="m-auto">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}

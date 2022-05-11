@@ -26,7 +26,7 @@ main{
 
 #FormSide h1{
     font-size: 45px;
-    margin: 0;
+    margin-bottom: 20px;
 }
 
 #loginOpts{
@@ -53,17 +53,6 @@ input[value="Register"], input[value="Login"]{
     letter-spacing: 2px;
     margin-top: 20px;
 }
-
-
-#Social{
-    width: 70%;
-    font-size: 25px;
-    margin: 0 auto 50px auto;
-}
-
-#Social a i{width: 25px;}
-#Social a{color: #8F8F8F;}
-#Social a:not(a:last-child){float: left; margin-right: calc(30% - 25px);}
 
 #copyright{color: #8F8F8F;}
 

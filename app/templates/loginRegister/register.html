@@ -12,10 +12,10 @@
             <form method="post">
                 {{ form.hidden_tag() }}
 
-                {{ form.user_name(class="inputBox", type="text", placeholder="User name") }}
-                {{ form.email(class="inputBox", type="email", placeholder="Email address") }}
-                {{ form.password(class="inputBox", type="password", placeholder="Password") }}
-                {{ form.confirm_pass(class="inputBox", type="password", placeholder="Confirm password") }}
+                {{ form.user_name(class="form-control mb-3", type="text", placeholder="User name") }}
+                {{ form.email(class="form-control mb-3", type="email", placeholder="Email address") }}
+                {{ form.password(class="form-control mb-3", type="password", placeholder="Password") }}
+                {{ form.confirm_pass(class="form-control mb-3", type="password", placeholder="Confirm password") }}
                 {{ form.submit(value="Register") }}
             </form>
         </section>
