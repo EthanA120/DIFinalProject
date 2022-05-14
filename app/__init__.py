@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
-from flask_ngrok import run_with_ngrok
+# from flask_ngrok import run_with_ngrok
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -20,3 +20,6 @@ login_mngr = LoginManager(app)
 login_mngr.login_view = 'login'
 
 from app import routes
+from app.tic_tac_toe.routs import tic_tac_toe
+
+app.register_blueprint(tic_tac_toe)

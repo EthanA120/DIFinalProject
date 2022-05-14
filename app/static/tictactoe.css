@@ -1,0 +1,22 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+table {
+    margin: auto;
+    width: 300px !important;
+    height: 300px !important;
+}
+
+td {
+    width: fit-content;
+    height: fit-content;
+}
+
+td button {
+    width: 100px;
+    height: 100px;
+}
+

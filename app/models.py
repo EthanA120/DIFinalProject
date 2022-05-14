@@ -22,6 +22,13 @@ class Score(db.Model):
     black_jack = db.Column(db.Integer, default=0)
 
 
+class Game(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    image = db.Column(db.String(250), unique=True)
+    title = db.Column(db.String(50), unique=True)
+    info = db.Column(db.String(500))
+
+
 # db.drop_all()
 db.create_all()
 db.session.commit()

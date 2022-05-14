@@ -6,25 +6,21 @@
 
 {% block main %}
 {#    <h1>Flask Games</h1>#}
-{#    {% for game in games_list %}#}
+    {% for game in games_list %}
         <div class="card">
-            <a href="#" class="m-auto">
-                <img src="#" class="card-img-top" alt="">
+            <a href="{{ url_for('tic_tac_toe.play_game') }}" class="m-auto">
+                <img src="{{ game.image }}" class="card-img-top" alt="">
             </a>
-            <a href="#"
-               class="card-title fs-4 text-center">Title</a>
+            <a href="{{ url_for('tic_tac_toe.play_game') }}"
+               class="card-title fs-4 text-center">{{ game.title }}</a>
             <div class="card-body">
                 <table class="table table-sm table-borderless" style="line-height: 15px">
                     <tr>
-                        <th class="w-25">Intro:</th>
-                        <td class="w-75">intro</td>
-                    </tr>
-                    <tr>
-                        <th class="w-25">Category:</th>
-                        <td class="w-75">category</td>
+                        <th class="w-25">Info:</th>
+                        <td class="w-75">{{ game.info }}</td>
                     </tr>
                 </table>
             </div>
         </div>
-{#    {% endfor %}#}
+    {% endfor %}
 {% endblock %}

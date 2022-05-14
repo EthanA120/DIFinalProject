@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Tic Tac Toe{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/tictactoe.css') }}">
+{% endblock %}
+
+{% block main %}
+    <h2>{{ msg }}</h2>
+    <form class="text-center" method="POST">
+        <table class="table table-bordered text-center">
+            {% for j in range(0, 3) %}
+                <tr>
+                    {% for i in range(0, 3) %}
+                        <td class="">
+                            <button class="btn" type="submit" name="choice" value="{{ j * 3 + i + 1 }}"
+                                    {{ "disabled" if ttt.spot_string(i, j) != " " }}>
+                                {{ ttt.spot_string(i, j) }}
+                            </button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <button class="btn btn-primary" type="submit" name="reset">Start Over</button>
+    </form>
+{% endblock %}

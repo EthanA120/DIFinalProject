@@ -35,6 +35,7 @@
                             {% if current_user.is_anonymous %}
                                 <a class="nav-link {% if endpoint[-1] == "login" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login') }}">Login</a>
                                 <a class="nav-link {% if endpoint[-1] == "register" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('register') }}">Register</a>
+
                             {% else %}
                                 <div class="nav-item dropdown pe-5">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{ current_user.username }}</a>

@@ -1,5 +1,5 @@
 from app import app, login_mngr
-from app.models import db, Player, Score
+from app.models import db, Player, Score, Game
 from app.forms import RegisterForm, LoginForm
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -14,7 +14,8 @@ def load_user(userid):
 
 @app.route('/', methods=["POST", "GET"])
 def index():
-    return render_template('index.html')
+    games_list = db.session.query(Game).all()
+    return render_template('index.html', games_list=games_list)
 
 
 @app.route('/register', methods=["POST", "GET"])
