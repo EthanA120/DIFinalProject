@@ -6,14 +6,15 @@
 {% endblock %}
 
 {% block main %}
-    <h2>{{ msg }}</h2>
+    <h2 class="alert {% if current_user.username in msg %} alert-success {% elif 'Computer' in msg %} alert-danger {% else %} alert-primary {% endif %}">{{ msg }}</h2>
     <form class="text-center" method="POST">
         <table class="table table-bordered text-center">
             {% for j in range(0, 3) %}
                 <tr>
                     {% for i in range(0, 3) %}
                         <td class="">
-                            <button class="btn" type="submit" name="choice" value="{{ j * 3 + i + 1 }}"
+                            <button class="btn fs-3 fw-bold {{ 'text-primary' if ttt.spot_string(i, j) == "X" else 'text-success' }}"
+                                    type="submit" name="choice" value="{{ j * 3 + i + 1 }}"
                                     {{ "disabled" if ttt.spot_string(i, j) != " " }}>
                                 {{ ttt.spot_string(i, j) }}
                             </button>
@@ -22,6 +23,20 @@
                 </tr>
             {% endfor %}
         </table>
-        <button class="btn btn-primary" type="submit" name="reset">Start Over</button>
+        <button class="btn btn-primary fs-3" type="submit" name="reset">Start Over</button>
+
+        <div class="d-flex flex-column w-25">
+            <table class="table table-bordered mt-3 ms-0 h-25">
+                <tr>
+                    <th class="col-6">{{ current_user.username }}</th>
+                    <th class="col-6">Computer</th>
+                </tr>
+                <tr>
+                    <td>{{ current_user.score.tic_tac_toe }}</td>
+                    <td>{{ current_user.score.ctic_tac_toe }}</td>
+                </tr>
+            </table>
+            <button class="btn btn-warning align-self-center" type="submit" name="reset_score">Reset Score</button>
+        </div>
     </form>
 {% endblock %}

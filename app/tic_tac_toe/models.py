@@ -1,4 +1,5 @@
 from easyAI import TwoPlayerGame
+from app.routes import current_user, db
 
 
 class TicTacToe(TwoPlayerGame):
@@ -65,14 +66,16 @@ class TicTacToe(TwoPlayerGame):
         opp_won = self.lose()
         i_won = self.lose(who=self.current_player)
         if opp_won and not i_won:
-            return -100
+            return -1
         if i_won and not opp_won:
-            return 100
+            return 1
         return 0
 
     def winner(self):
         if self.lose(who=2):
-            return "AI Wins"
+            current_user.score.ctic_tac_toe += 1
+            return "Computer Wins"
         elif self.lose(who=1):
-            return "Player Wins"
+            current_user.score.tic_tac_toe += 1
+            return f"{current_user.username} Wins"
         return "Tie"
