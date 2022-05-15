@@ -78,4 +78,4 @@ class TicTacToe(TwoPlayerGame):
         elif self.lose(who=1):
             current_user.score.tic_tac_toe += 1
             return f"{current_user.username} Wins"
-        return "Tie"
+        return "It's a Tie"
