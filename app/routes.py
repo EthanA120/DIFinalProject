@@ -1,9 +1,9 @@
 from app import app, login_mngr
-from app.models import db, Player, Score, Game
 from app.forms import RegisterForm, LoginForm
-from flask_login import current_user, login_user, login_required, logout_user
+from app.models import db, Player, Score, Game
+from flask import render_template, redirect, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask import render_template, redirect, url_for, session, request, flash
+from flask_login import current_user, login_user, login_required, logout_user
 
 
 @login_mngr.user_loader

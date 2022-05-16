@@ -1,5 +1,5 @@
 from easyAI import TwoPlayerGame
-from app.routes import current_user, db
+from app.routes import current_user
 
 
 class TicTacToe(TwoPlayerGame):
