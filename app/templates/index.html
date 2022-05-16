@@ -8,12 +8,12 @@
 {#    <h1>Flask Games</h1>#}
     {% for game in games_list %}
         <div class="card">
-            <a href="{{ url_for('tic_tac_toe.play_game') }}" class="m-auto">
-                <img src="{{ game.image }}" class="card-img-top" alt="">
+            <a href="{{ url_for(game.location+'.play_game') }}" class="m-auto">
+                <img src="{{ game.image }}" class="card-img-top" style="" alt="" height="200px">
             </a>
-            <a href="{{ url_for('tic_tac_toe.play_game') }}"
-               class="card-title fs-4 text-center">{{ game.title }}</a>
-            <div class="card-body">
+            <a href="{{ url_for(game.location+'.play_game') }}"
+               class="card-title pt-3 fs-4 text-center">{{ game.title }}</a>
+            <div class="card-body p-1">
                 <table class="table table-sm table-borderless" style="line-height: 15px">
                     <tr>
                         <th class="w-25">Info:</th>

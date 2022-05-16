@@ -21,5 +21,7 @@ login_mngr.login_view = 'login'
 
 from app import routes
 from app.tic_tac_toe.routs import tic_tac_toe
+from app.blackjack.routes import blackjack
 
 app.register_blueprint(tic_tac_toe)
+app.register_blueprint(blackjack)

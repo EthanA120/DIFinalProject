@@ -28,6 +28,7 @@ class Score(db.Model):
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    location = db.Column(db.String(50), unique=True)
     image = db.Column(db.String(250), unique=True)
     title = db.Column(db.String(50), unique=True)
     info = db.Column(db.String(500))
