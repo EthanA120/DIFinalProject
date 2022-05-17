@@ -11,8 +11,8 @@ tic_tac_toe = Blueprint('tic_tac_toe', __name__)
 @login_required
 def play_game():
     ttt = TicTacToe([Human_Player(), AI_Player(Negamax(5))])
-    game_cookie = request.cookies.get("game_board")
 
+    game_cookie = request.cookies.get("game_board")
     if game_cookie:
         ttt.board = [int(x) for x in game_cookie.split(",")]
 

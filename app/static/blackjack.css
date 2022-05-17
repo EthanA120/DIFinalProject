@@ -7,16 +7,24 @@ body {
     text-align: center;
 }
 
+main {
+    flex-direction: column;
+    /*align-content: center;*/
+}
+
 h1 {
+    text-align: center;
     color: goldenrod;
 }
 
-#message-el {
-    font-style: italic;
+form {
+    width: fit-content;
 }
 
-/* 3. Make sure that the two buttons have some space between
-each other when they are rendered out vertically */
+h4 {
+    margin-bottom: 15px !important;
+}
+
 button {
     color: #016f32;
     width: 150px;
