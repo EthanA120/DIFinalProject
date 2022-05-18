@@ -8,12 +8,21 @@
 {% block main %}
     <h1>Blackjack</h1>
     <form method="POST">
-        <h2 class="w-100 mb-3">{{ msg }}</h2>
-        <h4>Cards: {% for card in hand %}
-            {{ card[0] }}
-        {% endfor %}</h4>
-        <h4>Sum: {{ hand_sum }}</h4>
-        <button class="btn btn-warning" type="submit" name="card">NEW CARD</button>
-        <button class="btn btn-primary" type="submit" name="start">START GAME</button>
+        <div class="container w-75">
+            <h2 class="alert alert-{% if 'Blackjack' in msg %}success{% elif 'out' in msg %}danger {% else %}primary{% endif %}">{{ msg }}</h2>
+            <div class="d-flex justify-content-center">
+                <img class="me-2" src="{{ url_for('static', filename='../static/assets/images/cards/others/' + back + '_back.png') }}" alt="" height="200px">
+                {% for card in hand %}
+                    <img class="{% if not loop.last %} me-2 {% endif %}" src="{{ url_for('static', filename='../static/assets/images/cards/' + card + '.png') }}"
+                         alt="{{ card }}" height="200px">
+                {% endfor %}
+            </div>
+
+            <h4 class="alert alert-info m-auto mt-3 mb-3 text-center">Sum of cards: {{ hand_sum }}</h4>
+            <div class="w-50 d-flex justify-content-evenly m-auto">
+                <button class="btn btn-warning" type="submit" name="card"><img src="{{ url_for('static', filename='../static/assets/images/new_card.png') }}" alt="" height="25pt"> New Card</button>
+                <button class="btn btn-primary" type="submit" name="start"><img src="{{ url_for('static', filename='../static/assets/images/start_game.png') }}" alt="" height="25pt"> Start Game</button>
+            </div>
+        </div>
     </form>
 {% endblock %}

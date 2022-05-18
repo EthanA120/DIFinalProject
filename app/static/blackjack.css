@@ -9,31 +9,24 @@ body {
 
 main {
     flex-direction: column;
-    /*align-content: center;*/
+    align-content: center;
 }
 
 h1 {
     text-align: center;
-    color: goldenrod;
 }
 
 form {
-    width: fit-content;
+    width: 75%;
+    display: flex;
+    justify-content: center;
 }
 
 h4 {
+    width: fit-content;
     margin-bottom: 15px !important;
 }
 
 button {
-    color: #016f32;
     width: 150px;
-    background: goldenrod;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-weight: bold;
-    border: none;
-    border-radius: 2px;
-    margin-bottom: 2px;
-    margin-top: 2px;
 }

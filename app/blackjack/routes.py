@@ -1,27 +1,25 @@
 from app.blackjack.models import Blackjack
 from flask_login import login_required, current_user
-from flask import Blueprint, request, render_template, make_response
+from flask import Blueprint, request, render_template, make_response, redirect, url_for, session
+
 
 blackjack = Blueprint('blackjack', __name__)
+start = False
 
 
 @blackjack.route("/blackjack", methods=["GET", "POST"])
 @login_required
 def play_game():
-    blj = Blackjack()
-    if 'start' in request.form:
+    global start
+    global blj
+
+    if 'start' in request.form or not start:
+        start = True
         blj = Blackjack()
 
-    game_cookie = request.cookies.get("game_board")
-    if game_cookie:
-        blj.hand = game_cookie.split(',')
+    if 'card' in request.form and blj.game_alive():
+        blj.new_card()
 
-    if blj.game_alive():
-        if 'card' in request.form:
-            blj.new_card()
+    hand = [x[1] for x in blj.hand]
 
-    resp = make_response(render_template("games/blackjack.html", msg=blj.msg, hand=blj.hand, hand_sum=blj.sum))
-    c = ",".join([x[0] for x in blj.hand])
-    print(c)
-    resp.set_cookie("game_board", c, expires=0)
-    return resp
+    return render_template("games/blackjack.html", msg=blj.msg, hand=hand, hand_sum=blj.sum, back=blj.back)

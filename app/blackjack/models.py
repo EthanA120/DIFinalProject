@@ -7,25 +7,36 @@ class Blackjack:
     def __init__(self):
         self.msg = "Lets play a round"
         self.blackjack = False
+        self.hand = []
+        self.aces = []
         self.sum = 0
 
-        self.cards = [str(num) + shape for num in range(1, 13) for shape in ['h', 'd', 's', 'c']]
-        self.hand = [self.get_card(), self.get_card()]
-        self.sum = sum([x[1] for x in self.hand])
+        self.back = choice(['red', 'blue', 'gray', 'purple', 'yellow', 'green'])
+        self.cards = [[num, str(num) + shape] for num in range(1, 13) for shape in ['H', 'D', 'S', 'C']]
+        self.initial_hand = [self.new_card(), self.new_card()]
 
     def get_card(self):
+        is_ace = False
         card = choice(self.cards)
-        card_num = int(card[0])
         self.cards.remove(card)
 
-        if card_num > 10:
-            return card, 10
-        elif card_num == 1 and self.sum < 11:
-            return card, 11
-        else:
-            return card, card_num
+        if card[0] > 10:
+            card[0] = 10
+        elif card[0] == 1 and self.sum < 11:
+            card[0] = 11
+            is_ace = True
+        return card, is_ace
 
     def game_alive(self):
+        # Turn aces from 11 to 1 if sum of cards are higher than 21
+        aces = [self.hand[x] for x in self.aces]  # get the aces from the hand
+        while self.sum > 21 and any([x[0] == 11 for x in aces]):  # while higher than 21 and there are any 11 aces
+            for index in self.aces:
+                if self.hand[index][0] == 11:
+                    self.hand[index][0] = 1
+                    self.sum = sum([x[0] for x in self.hand])  # the sum is changing
+                    aces = [self.hand[x] for x in self.aces]  # and also the aces list
+
         if self.sum <= 20:
             self.msg = "Do you want to draw a new card?"
             return True
@@ -38,7 +49,10 @@ class Blackjack:
             return False
 
     def new_card(self):
-        # if self.game_alive():
         card = self.get_card()
-        self.sum += card[1]
-        self.hand.append(card)
+        self.hand.append(card[0])
+        self.sum = sum([x[0] for x in self.hand])
+
+        if card[1]:
+            self.aces.append(len(self.hand) - 1)
+        self.game_alive()
