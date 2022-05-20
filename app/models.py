@@ -22,8 +22,7 @@ class Score(db.Model):
     tic_tac_toe = db.Column(db.Integer, default=0)
     ctic_tac_toe = db.Column(db.Integer, default=0)
 
-    black_jack = db.Column(db.Integer, default=0)
-    cblack_jack = db.Column(db.Integer, default=0)
+    blackjack = db.Column(db.Integer, default=0)
 
 
 class Game(db.Model):
