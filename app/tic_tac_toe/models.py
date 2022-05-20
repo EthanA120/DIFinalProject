@@ -35,7 +35,7 @@ class TicTacToe(TwoPlayerGame):
         self.board[int(move) - 1] = 0
 
     def lose(self, who=None):
-        """ Has the opponent three in line? """
+        # Has the opponent three in line?
         if who is None:
             who = self.opponent_index
         wins = [all([(self.board[c - 1] == who) for c in line]) for line in self.WIN_LINES]

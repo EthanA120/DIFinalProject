@@ -1,3 +1,5 @@
+from app import db
+
 from app.routes import current_user
 from random import choice
 
@@ -6,53 +8,105 @@ class Blackjack:
 
     def __init__(self):
         self.msg = "Lets play a round"
-        self.blackjack = False
-        self.hand = []
-        self.aces = []
-        self.sum = 0
-
-        self.back = choice(['red', 'blue', 'gray', 'purple', 'yellow', 'green'])
         self.cards = [[num, str(num) + shape] for num in range(1, 13) for shape in ['H', 'D', 'S', 'C']]
-        self.initial_hand = [self.new_card(), self.new_card()]
+        self.back = choice(['red', 'blue', 'gray', 'purple', 'yellow', 'green'])
+        self.cover = True
 
-    def get_card(self):
+        self.p_hand = []
+        self.p_aces = []
+        self.new_card(self.p_hand, self.p_aces)
+        self.new_card(self.p_hand, self.p_aces)
+        self.p_sum = self.check_sum(self.p_hand, self.p_aces)
+        self.p_game_alive = self.game_alive(self.p_sum)
+
+        self.c_hand = []
+        self.c_aces = []
+        self.new_card(self.c_hand, self.c_aces)
+        self.new_card(self.c_hand, self.c_aces)
+        self.c_sum = self.check_sum(self.c_hand, self.c_aces)
+        self.c_game_alive = self.game_alive(self.c_sum)
+
+    @staticmethod
+    def check_sum(hand, aces):
+        cards_sum = sum([x[0] for x in hand])
+        if cards_sum == 21:
+            return cards_sum
+
+        # Turn aces from 11 to 1 if sum of cards are higher than 21
+        aces_in_hand = [hand[x] for x in aces]  # get the aces from the hand
+        while cards_sum > 21 and any(
+                [x[0] == 11 for x in aces_in_hand]):  # while higher than 21 and there are any 11 aces
+            for index in aces:
+                if cards_sum > 21 and hand[index][0] == 11:  # the values of the aces in the hand is changing
+                    hand[index][0] = 1
+                    cards_sum = sum([x[0] for x in hand])  # and also the sum
+                    aces_in_hand = [hand[x] for x in aces]  # and the aces list
+        return cards_sum
+
+    @staticmethod
+    def game_alive(cards_sum):
+        if cards_sum <= 20:
+            msg = "Do you want to draw a new card?"
+            game = True
+            blackjack = False
+        elif cards_sum == 21:
+            msg = "You've got Blackjack!"
+            game = False
+            blackjack = True
+        else:
+            msg = "You're out of the game!"
+            game = False
+            blackjack = False
+        return [game, blackjack, msg]
+
+    def get_card(self, cards_sum):
         is_ace = False
         card = choice(self.cards)
         self.cards.remove(card)
 
         if card[0] > 10:
             card[0] = 10
-        elif card[0] == 1 and self.sum < 11:
+        elif card[0] == 1 and cards_sum < 11:
             card[0] = 11
             is_ace = True
         return card, is_ace
 
-    def game_alive(self):
-        # Turn aces from 11 to 1 if sum of cards are higher than 21
-        aces = [self.hand[x] for x in self.aces]  # get the aces from the hand
-        while self.sum > 21 and any([x[0] == 11 for x in aces]):  # while higher than 21 and there are any 11 aces
-            for index in self.aces:
-                if self.hand[index][0] == 11:
-                    self.hand[index][0] = 1
-                    self.sum = sum([x[0] for x in self.hand])  # the sum is changing
-                    aces = [self.hand[x] for x in self.aces]  # and also the aces list
-
-        if self.sum <= 20:
-            self.msg = "Do you want to draw a new card?"
-            return True
-        elif self.sum == 21:
-            self.msg = "You've got Blackjack!"
-            self.blackjack = True
-            return False
-        else:
-            self.msg = "You're out of the game!"
-            return False
-
-    def new_card(self):
-        card = self.get_card()
-        self.hand.append(card[0])
-        self.sum = sum([x[0] for x in self.hand])
-
+    def new_card(self, hand, aces, cards_sum=0):
+        card = self.get_card(cards_sum)
+        hand.append(card[0])
         if card[1]:
-            self.aces.append(len(self.hand) - 1)
-        self.game_alive()
+            aces.append(len(hand) - 1)
+        cards_sum = self.check_sum(hand, aces)
+        game_alive = self.game_alive(cards_sum)
+        return cards_sum, game_alive
+
+    def computer_ai(self):
+        if self.p_sum > self.c_sum:
+            while self.c_sum < 16 and self.c_game_alive[0]:
+                self.c_sum, self.c_game_alive = self.new_card(self.c_hand, self.c_aces, self.c_sum)
+        return False
+
+    def open_cards(self):
+        self.computer_ai()
+
+        if any(self.p_game_alive[0:2]) and any(self.c_game_alive[0:2]):
+            if self.p_sum > self.c_sum:
+                self.msg = f'{current_user.username} Win!'
+            elif self.p_sum < self.c_sum:
+                self.msg = 'Dealer Win!'
+            else:
+                self.msg = "It's a Tie!"
+
+        elif any(self.p_game_alive[0:2]) and not any(self.c_game_alive[0:2]):
+            self.msg = f'{current_user.username} Win!'
+
+        elif not any(self.p_game_alive[0:2]) and any(self.c_game_alive[0:2]):
+            self.msg = 'Dealer Win!'
+
+        else:
+            self.msg = "It's a Tie!"
+
+        self.p_game_alive[0] = False
+
+    def dealing(self, wager):
+        pass

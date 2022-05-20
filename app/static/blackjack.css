@@ -12,15 +12,12 @@ main {
     align-content: center;
 }
 
-h1 {
-    text-align: center;
-}
-
 form {
     width: 75%;
     display: flex;
     justify-content: center;
 }
+
 
 h4 {
     width: fit-content;
