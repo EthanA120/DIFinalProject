@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="Game" class="w-75 row mb-3 {% if deal %}d-none{% endif %}">
+    <div id="Game" class="w-75 row mb-3">
         <div id="Dealer" class="row w-100 mb-2 d-flex">
             <div class="col-10 d-flex justify-content-start">
                 <img class="me-2 {% if not cover %}d-none{% endif %}"
@@ -18,29 +18,26 @@
                          alt="{{ card }}" height="200px">
                 {% endfor %}
             </div>
-            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'Blackjack' in c_msg %}success{% elif 'out' in c_msg %}danger{% else %}primary{% endif %}">
+            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in c_msg %}success{% elif 'out' in c_msg %}danger{% else %}primary{% endif %}">
                 Dealer: {{ c_sum }}</h4>
         </div>
 
         <div id="Panel" class="row mb-2">
             <h3 class="col-10 m-auto fs-4 text-center alert alert-{% if current_user.username in msg %}success{% elif 'Dealer' in msg %}danger{% elif 'Tie!' in msg %}warning{% else %}primary{% endif %}">{{ msg }}</h3>
             <form method="post" class="col-2 d-flex flex-column">
-                <button class="btn btn-primary m-auto mb-2 text-start {% if p_alive %}d-none{% endif %}" type="submit"
-                        name="start"><img
-                        src="{{ url_for('static', filename='../static/assets/images/start_game.png') }}" alt=""
-                        height="25pt"> Start Game
-                </button>
-                <button class="btn btn-warning m-auto mb-2 text-start {% if not p_alive %}d-none{% endif %}"
+                <button class="btn btn-warning m-auto mb-2 text-start {% if not p_alive and not deal %}d-none{% endif %}"
                         type="submit" name="hit"><img
                         src="{{ url_for('static', filename='../static/assets/images/new_card.png') }}" alt=""
                         height="25pt"> Hit
                 </button>
-                <button class="btn btn-success m-auto mb-2 text-start {% if not p_alive %}d-none{% endif %}" type="submit"
+                <button class="btn btn-success m-auto mb-2 text-start {% if not p_alive and not deal %}d-none{% endif %}"
+                        type="submit"
                         name="stand"><img
                         src="{{ url_for('static', filename='../static/assets/images/open_cards.png') }}" alt=""
                         height="25pt"> Stand
                 </button>
-                <button class="btn btn-danger m-auto text-start {% if not p_alive %}d-none{% endif %}" type="submit"
+                <button class="btn btn-danger m-auto text-start {% if not p_alive and not deal or not double %}d-none{% endif %}"
+                        type="submit"
                         name="double"><i class="fa-solid fa-coins"></i> <i class="fa-solid fa-xmark"></i> Double
                 </button>
             </form>
@@ -54,24 +51,33 @@
                          alt="{{ card }}" height="200px">
                 {% endfor %}
             </div>
-            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'Blackjack' in p_msg %}success{% elif 'out' in p_msg %}danger{% else %}primary{% endif %}">{{ current_user.username }}: {{ p_sum }}</h4>
+            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in p_msg %}success{% elif 'out' in p_msg %}danger{% else %}primary{% endif %}">{{ current_user.username }}: {{ p_sum }}</h4>
         </div>
     </div>
 
-    <div class="m-auto w-25 p-2 border border-3 border-warning rounded">
-        <h3 class="text-center text-light"><i class="text-warning fa-solid fa-coins"></i> Wager: ${{ wager }}</h3>
-    </div>
-
     <form method="post"
-          class="w-50 d-flex flex-column align-content-center p-3 border border-3 border-success rounded {% if not deal %}d-none{% endif %}">
-        <h1 class="text-center">Place a bet</h1>
+          class="w-50 d-flex flex-column align-content-center mb-3 p-3 border border-3 border-success rounded {% if p_alive and deal %}d-none{% endif %}">
+        {#hide if deal is True and if game alive#}
+        <h3 class="text-center">Place a bet</h3>
         <label class="fs-3 m-auto d-flex mb-2">
             <input class="fs-3 m-auto" type="number" min="1" max="{{ current_user.score.blackjack }}" name="deal"
-                   placeholder="Wager" required> &nbsp;<h4 class="fs-3 m-auto"> /
+                   placeholder="Wager" required> &nbsp;<h4 class="fs-3 m-auto alert alert-info"><i
+                class="fa-solid fa-wallet"></i>
             ${{ current_user.score.blackjack }}</h4>
         </label>
-        <button class="fs-3 btn btn-primary m-auto" type="submit"
-                name="deal"><i class="fa-solid fa-coins"></i> Deal
+        <button class="btn btn-primary m-auto" type="submit"
+                name="start"><i class="fa-solid fa-coins"></i> Start Game
         </button>
     </form>
+
+    <div class="mb-3 d-flex {% if not p_alive or not deal %}d-none{% endif %}">
+        <div id="Wallet" class="d-flex w-25 ">
+            <h2 class="fs-3 alert alert-info m-auto"><i class="fa-solid fa-wallet"></i> ${{ current_user.score.blackjack }}</h2>
+        </div>
+
+        <div class="m-auto w-25 p-2 border border-3 border-warning rounded">
+            {#hide if deal is False or if game not alive#}
+            <h3 class="text-center text-light"><i class="text-warning fa-solid fa-coins"></i> Wager: ${{ wager }}</h3>
+        </div>
+    </div>
 {% endblock %}

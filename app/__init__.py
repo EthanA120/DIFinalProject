@@ -25,3 +25,5 @@ from app.blackjack.routes import blackjack
 
 app.register_blueprint(tic_tac_toe)
 app.register_blueprint(blackjack)
+
+# Final

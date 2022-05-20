@@ -10,28 +10,34 @@ start = False
 @blackjack.route("/blackjack", methods=["GET", "POST"])
 @login_required
 def play_game():
-    deal = False
-    wager = 0
-    global start
-    global blj
+    global start, blj
+    double = True
 
-    if 'start' in request.form or not start:
+    if not start:
         start = True
-        deal = True
+        double = True
+        session['deal'] = False
         session['lock'] = False
         blj = Blackjack()
 
-    if 'deal' in request.form:
-        deal = False
-        wager = request.form.get('deal')
+    if 'start' in request.form:
+        session['wager'] = int(request.form.get('deal'))
+        session['deal'] = True
 
     if 'hit' in request.form and blj.p_game_alive[0]:
         blj.p_sum, blj.p_game_alive = blj.new_card(blj.p_hand, blj.p_aces, blj.p_sum)
+        double = False
+
+    if 'double' in request.form and blj.p_game_alive[0] and double:
+        blj.p_sum, blj.p_game_alive = blj.new_card(blj.p_hand, blj.p_aces, blj.p_sum)
+        session['wager'] = 2 * session['wager']
+        blj.p_game_alive[0] = False
 
     if ('stand' in request.form or not blj.p_game_alive[0]) and not session['lock']:
-        blj.cover = blj.open_cards()
-        blj.dealing(wager)
+        blj.cover = blj.open_cards(session['wager'])
         session['lock'] = True
+        session['deal'] = False
+        start = False
 
     p_alive = blj.p_game_alive[0]
     p_hand = [x[1] for x in blj.p_hand]
@@ -42,5 +48,5 @@ def play_game():
     return render_template("games/blackjack.html",
                            back=blj.back, msg=blj.msg, p_msg=p_msg, c_msg=c_msg, p_hand=p_hand,
                            p_sum=blj.p_sum, c_hand=c_hand, c_sum=blj.c_sum, cover=blj.cover,
-                           p_alive=p_alive, deal=deal, wager=wager
+                           p_alive=p_alive, deal=session['deal'], wager=session['wager'], double=double
                            )

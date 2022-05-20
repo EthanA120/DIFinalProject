@@ -46,15 +46,15 @@ class Blackjack:
     @staticmethod
     def game_alive(cards_sum):
         if cards_sum <= 20:
-            msg = "Do you want to draw a new card?"
+            msg = "can draw"
             game = True
             blackjack = False
         elif cards_sum == 21:
-            msg = "You've got Blackjack!"
+            msg = "blackjack"
             game = False
             blackjack = True
         else:
-            msg = "You're out of the game!"
+            msg = "out"
             game = False
             blackjack = False
         return [game, blackjack, msg]
@@ -86,27 +86,39 @@ class Blackjack:
                 self.c_sum, self.c_game_alive = self.new_card(self.c_hand, self.c_aces, self.c_sum)
         return False
 
-    def open_cards(self):
+    def open_cards(self, wager):
         self.computer_ai()
 
         if any(self.p_game_alive[0:2]) and any(self.c_game_alive[0:2]):
+            print('simple')
             if self.p_sum > self.c_sum:
                 self.msg = f'{current_user.username} Win!'
+                if self.p_game_alive[1]:
+                    current_user.score.blackjack += wager * 2
+                else:
+                    current_user.score.blackjack += wager
+
             elif self.p_sum < self.c_sum:
                 self.msg = 'Dealer Win!'
+                current_user.score.blackjack -= wager
             else:
                 self.msg = "It's a Tie!"
 
         elif any(self.p_game_alive[0:2]) and not any(self.c_game_alive[0:2]):
+            print('c_burned')
             self.msg = f'{current_user.username} Win!'
+            if self.p_game_alive[1]:
+                current_user.score.blackjack += wager * 2
+            else:
+                current_user.score.blackjack += wager
 
         elif not any(self.p_game_alive[0:2]) and any(self.c_game_alive[0:2]):
+            print('p_burned')
             self.msg = 'Dealer Win!'
+            current_user.score.blackjack -= wager
 
         else:
             self.msg = "It's a Tie!"
 
+        db.session.commit()
         self.p_game_alive[0] = False
-
-    def dealing(self, wager):
-        pass
