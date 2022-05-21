@@ -46,7 +46,7 @@ def play_game():
     c_msg = blj.c_game_alive[2]
 
     return render_template("games/blackjack.html",
-                           back=blj.back, msg=blj.msg, p_msg=p_msg, c_msg=c_msg, p_hand=p_hand,
+                           back=blj.back, start=start, msg=blj.msg, p_msg=p_msg, c_msg=c_msg, p_hand=p_hand,
                            p_sum=blj.p_sum, c_hand=c_hand, c_sum=blj.c_sum, cover=blj.cover,
                            p_alive=p_alive, deal=session['deal'], wager=session['wager'], double=double
                            )

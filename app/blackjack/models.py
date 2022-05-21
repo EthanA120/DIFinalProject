@@ -120,5 +120,9 @@ class Blackjack:
         else:
             self.msg = "It's a Tie!"
 
+        if current_user.score.blackjack <= 0:
+            current_user.score.blackjack = 1000
+            self.msg = "Here's a $1000 for a fresh start"
+
         db.session.commit()
         self.p_game_alive[0] = False
