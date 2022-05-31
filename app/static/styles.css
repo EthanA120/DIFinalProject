@@ -35,6 +35,8 @@ main{
 }
 
 .card{
+    min-width: 300px !important;
+    min-height: 350px !important;
     width: 19%;
     margin: 1%;
     padding: 15px;

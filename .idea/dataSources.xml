@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="games" uuid="52620ff0-024e-44e1-bdec-33e1ff84ad57">
+    <data-source source="LOCAL" name="games" uuid="0bef299b-a307-4a4b-a95c-3125b09d5a16">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\VSCode\DI_Bootcamp\DIFinalProject\app\games.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:\VSCode\DIFinalProject\app\games.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

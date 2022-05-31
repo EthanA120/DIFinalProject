@@ -1,7 +1,10 @@
+from builtins import id
+
+from sqlalchemy import exc
 from app import app, login_mngr
 from app.forms import RegisterForm, LoginForm
 from app.models import db, Player, Score, Game
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, session
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user, login_required, logout_user
 
@@ -14,7 +17,13 @@ def load_user(userid):
 
 @app.route('/', methods=["POST", "GET"])
 def index():
+    # del session['deal']
     games_list = db.session.query(Game).all()
+    if 'deal' not in session:
+        session['deal'] = None
+        print(session)
+    if not session['deal']:
+        session['hide'] = True
     return render_template('index.html', games_list=games_list)
 
 
@@ -24,11 +33,13 @@ def register():
 
     if form.validate_on_submit():
         if not db.session.query(Player).filter_by(email=form.email.data).first():
-            Player(username=form.user_name.data, email=form.email.data, password=generate_password_hash(form.password.data), score=Score()).add_user()
-            return redirect(url_for('login'))
+            try:
+                player = Player(username=form.user_name.data, email=form.email.data, password=generate_password_hash(form.password.data), score=Score())
+                player.add_user()
+                return redirect(url_for('login'))
 
-        else:
-            flash('Username or email are already in use, please try again.', 'warning')
+            except exc.IntegrityError:
+                flash('Username or email are already in use, please try again.', 'warning')
 
     return render_template('loginRegister/register.html', form=form)
 

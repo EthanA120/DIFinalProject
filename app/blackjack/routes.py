@@ -16,13 +16,16 @@ def play_game():
     if not start:
         start = True
         double = True
+        session['wager'] = 0
         session['deal'] = False
         session['lock'] = False
         blj = Blackjack()
 
     if 'start' in request.form:
+        session['hide'] = False
         session['wager'] = int(request.form.get('deal'))
         session['deal'] = True
+        print(session['deal'])
 
     if 'hit' in request.form and blj.p_game_alive[0]:
         blj.p_sum, blj.p_game_alive = blj.new_card(blj.p_hand, blj.p_aces, blj.p_sum)
@@ -48,5 +51,6 @@ def play_game():
     return render_template("games/blackjack.html",
                            back=blj.back, start=start, msg=blj.msg, p_msg=p_msg, c_msg=c_msg, p_hand=p_hand,
                            p_sum=blj.p_sum, c_hand=c_hand, c_sum=blj.c_sum, cover=blj.cover,
-                           p_alive=p_alive, deal=session['deal'], wager=session['wager'], double=double
+                           p_alive=p_alive, deal=session['deal'], wager=session['wager'], double=double,
+                           hide=session['hide']
                            )

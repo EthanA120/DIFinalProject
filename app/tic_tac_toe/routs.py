@@ -10,6 +10,9 @@ tic_tac_toe = Blueprint('tic_tac_toe', __name__)
 @tic_tac_toe.route("/tictactoe", methods=["GET", "POST"])
 @login_required
 def play_game():
+    if 'lock' not in session:
+        session['lock'] = None
+
     ttt = TicTacToe([Human_Player(), AI_Player(Negamax(5))])
 
     game_cookie = request.cookies.get("game_board")

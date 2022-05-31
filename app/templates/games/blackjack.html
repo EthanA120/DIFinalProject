@@ -9,17 +9,25 @@
     <div id="Game" class="w-75 row mb-3">
         <div id="Dealer" class="row w-100 mb-2 d-flex">
             <div class="col-10 d-flex justify-content-start">
-                <img class="me-2 {% if not cover %}d-none{% endif %}"
-                     src="{{ url_for('static', filename='../static/assets/images/cards/others/' + back + '_back.png') }}"
-                     alt="" height="200px">
-                {% for card in c_hand %}
-                    <img class="{% if not loop.last %} me-2 {% endif %} {% if loop.index == 1 and cover %}d-none{% endif %}"
-                         src="{{ url_for('static', filename='../static/assets/images/cards/' + card + '.png') }}"
-                         alt="{{ card }}" height="200px">
-                {% endfor %}
-            </div>
-            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in c_msg %}success{% elif 'out' in c_msg %}danger{% else %}primary{% endif %}">
-                Dealer: {{ c_sum }}</h4>
+                {% if hide %}
+                    {% for card in range(2) %}
+                        <img class="me-2"
+                             src="{{ url_for('static', filename='../static/assets/images/cards/others/' + back + '_back.png') }}"
+                             alt="" height="200px">
+                    {% endfor %}
+                {% else %}
+                    <img class="me-2 {% if not cover %}d-none{% endif %}"
+                         src="{{ url_for('static', filename='../static/assets/images/cards/others/' + back + '_back.png') }}"
+                         alt="" height="200px">
+                    {% for card in c_hand %}
+                        <img class="{% if not loop.last %} me-2 {% endif %} {% if loop.index == 1 and cover %}d-none{% endif %}"
+                             src="{{ url_for('static', filename='../static/assets/images/cards/' + card + '.png') }}"
+                             alt="{{ card }}" height="200px">
+                    {% endfor %}
+                    </div>
+                    <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in c_msg %}success{% elif 'out' in c_msg %}danger{% else %}primary{% endif %}">
+                        Dealer: {{ c_sum }}</h4>
+                {% endif %}
         </div>
 
         <div id="Panel" class="row mb-2">
@@ -45,13 +53,21 @@
 
         <div id="Player" class="row w-100 mb-2 d-flex">
             <div class="col-10 d-flex justify-content-start">
-                {% for card in p_hand %}
-                    <img class="{% if not loop.last %} me-2 {% endif %}"
-                         src="{{ url_for('static', filename='../static/assets/images/cards/' + card + '.png') }}"
-                         alt="{{ card }}" height="200px">
-                {% endfor %}
-            </div>
-            <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in p_msg %}success{% elif 'out' in p_msg %}danger{% else %}primary{% endif %}">{{ current_user.username }}: {{ p_sum }}</h4>
+                {% if hide %}
+                    {% for card in range(2) %}
+                        <img class="me-2"
+                             src="{{ url_for('static', filename='../static/assets/images/cards/others/' + back + '_back.png') }}"
+                             alt="" height="200px">
+                    {% endfor %}
+                {% else %}
+                    {% for card in p_hand %}
+                        <img class="{% if not loop.last %} me-2 {% endif %}"
+                             src="{{ url_for('static', filename='../static/assets/images/cards/' + card + '.png') }}"
+                             alt="{{ card }}" height="200px">
+                    {% endfor %}
+                    </div>
+                    <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in p_msg %}success{% elif 'out' in p_msg %}danger{% else %}primary{% endif %}">{{ current_user.username }}: {{ p_sum }}</h4>
+                {% endif %}
         </div>
     </div>
 
@@ -72,7 +88,8 @@
 
     <div class="mb-3 d-flex {% if not p_alive or not deal %}d-none{% endif %}">
         <div id="Wallet" class="d-flex w-25 ">
-            <h2 class="fs-3 alert alert-info m-auto"><i class="fa-solid fa-wallet"></i> ${{ current_user.score.blackjack }}</h2>
+            <h2 class="fs-3 alert alert-info m-auto"><i class="fa-solid fa-wallet"></i>
+                ${{ current_user.score.blackjack }}</h2>
         </div>
 
         <div class="m-auto w-25 p-2 border border-3 border-warning rounded">

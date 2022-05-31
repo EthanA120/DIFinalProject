@@ -16,13 +16,13 @@ class Player(UserMixin, db.Model):
 
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    player_id = db.Column(db.Integer, db.ForeignKey('player.id'), unique=True)
     player = db.relationship("Player", back_populates="score", uselist=False)
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'), default=id)
 
     tic_tac_toe = db.Column(db.Integer, default=0)
     ctic_tac_toe = db.Column(db.Integer, default=0)
 
-    blackjack = db.Column(db.Integer, default=0)
+    blackjack = db.Column(db.Integer, default=1000)
 
 
 class Game(db.Model):
