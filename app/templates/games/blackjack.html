@@ -26,7 +26,7 @@
                     {% endfor %}
                     </div>
                     <h4 class="col-2 justify-content-end align-self-center text-center alert alert-{% if 'blackjack' in c_msg %}success{% elif 'out' in c_msg %}danger{% else %}primary{% endif %}">
-                        Dealer: {{ c_sum }}</h4>
+                        Dealer: {% if not cover %} {{ c_sum }} {% endif %} </h4>
                 {% endif %}
         </div>
 
