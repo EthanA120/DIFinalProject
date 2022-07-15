@@ -1,5 +1,3 @@
-from builtins import id
-
 from sqlalchemy import exc
 from app import app, login_mngr
 from app.forms import RegisterForm, LoginForm
