@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/login_register.css') }}">
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section id="FormSide">
+            <h1>Log In</h1>
+            <form method="post">
+                {{ form.hidden_tag() }}
+
+                {% if not email_sent %}
+                    {{ form.email(class="form-control mb-3", type="email", placeholder="Email address") }}
+                    <button class="btn btn-primary fs-3" type="submit" name="reset"><i class="fa-solid fa-arrow-rotate-left"></i> Send Email </button>
+                {% elif email_sent and not code_validation %}
+                    {{ form.reset_code(class="form-control mb-3", type="text", placeholder="Verification code") }}
+                    <button class="btn btn-primary fs-3" type="submit" name="validation"><i class="fa-solid fa-arrow-rotate-left"></i> Submit code </button>
+                {% endif %}
+
+                {% if email_sent and code_validation %}
+                    {{ form.new_pass(class="form-control mb-3", type="password", placeholder="Password") }}
+                    {{ form.submit(value="Submit") }}
+                {% endif %}
+            </form>
+        </section>
+    </main>
+{% endblock %}

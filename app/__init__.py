@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail
 # from flask_ngrok import run_with_ngrok
 
 
@@ -18,6 +19,8 @@ migrate = Migrate(app, db)
 
 login_mngr = LoginManager(app)
 login_mngr.login_view = 'login'
+
+mail = Mail(app)
 
 from app import routes
 from app.tic_tac_toe.routes import tic_tac_toe
