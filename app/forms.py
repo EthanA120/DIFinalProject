@@ -19,6 +19,6 @@ class LoginForm(FlaskForm):
     
 class ForgotPassForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    reset_code = StringField('NewTask', validators=[DataRequired(), Length(max=6)])
-    new_pass = PasswordField('Password', validators=[DataRequired()])
+    reset_code = StringField('NewTask', validators=[DataRequired(), Length(6, max=6)])
+    new_pass = PasswordField('Password', validators=[DataRequired(), Length(min=3, max=20)])
     submit = SubmitField('Submit')

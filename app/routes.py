@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_mail import Message
 from random import randint
+from enrich import printr
 
 
 @login_mngr.user_loader
@@ -24,6 +25,7 @@ def index():
         print(session)
     if not session['deal']:
         session['hide'] = True
+    
     return render_template('index.html', games_list=games_list)
 
 
@@ -49,6 +51,15 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
+    if 'user_mail' in session:
+        session['user_mail'] = None
+    if 'email_sent' in session:
+        session['email_sent'] = False
+    if 'reset_code' in session:
+        session['reset_code'] = None
+    if 'code_validation' in session:
+        session['code_validation'] = None
+        
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -68,34 +79,34 @@ def login():
 @app.route('/forgotpass', methods=["POST", "GET"])
 def forgotpass():
     form = ForgotPassForm()
-    
-    email_sent = False
-    reset_code = None
-    code_validation = None
 
-    if 'reset' in request.form and db.session.query(Player).filter_by(email=form.email.data.lower()).first():
-        user = db.session.query(Player).filter_by(email=form.email.data.lower()).first()
-        reset_code = randint(100000, 1000000)
-        msg = Message("Reset password", sender="noreply@demo.com", recipients=["EthanA120@Gmail.com"])
-        msg.body = f'Use this code to reset your password: {str(reset_code)}'
-        mail.send(msg)
-        email_sent = True
-    else:
-        flash('Email does\'nt exist', 'warning')
-        
-    if 'validation' in request.form:  # and form.reset_code.data == reset_code
-        print(reset_code, form.reset_code.data, type(reset_code), type(form.reset_code.data))
-        code_validation = form.reset_code.data
-    else:
-        flash('Verification code does\'nt match', 'warning')
+    if 'reset' in request.form:
+        if db.session.query(Player).filter_by(email=form.email.data.lower()).first():
+            session['user_mail'] = form.email.data.lower()
+            session['reset_code'] = str(randint(100000, 1000000))
+            msg = Message("Reset password", sender="noreply@demo.com", recipients=["EthanA120@Gmail.com"])
+            msg.body = f"Use this code to reset your password: {session['reset_code']}"
+            mail.send(msg)
+            session['email_sent'] = True
+        else:
+            flash('Email does\'nt exist', 'warning')
+            
+    printr(session['reset_code'], 'OrangeRed')
     
-    if form.validate_on_submit() and reset_code and code_validation:
-        user.password = generate_password_hash(form.new_pass.data)
+    if 'validation' in request.form:
+        if form.reset_code.data == session['reset_code']:
+            session['code_validation'] = form.reset_code.data
+        else:
+            flash('Verification code does\'nt match', 'warning')
+            
+    if form.submit.data and session['reset_code'] and session['code_validation']:
+        rs_user = db.session.query(Player).filter_by(email=session['user_mail']).first()
+        rs_user.password = generate_password_hash(form.new_pass.data)
         db.session.commit()
         return redirect(url_for('login'))
 
-    return render_template('loginRegister/forgotpass.html', form=form, email_sent=email_sent, reset_code=reset_code,
-                           code_validation=code_validation)
+    return render_template('loginRegister/forgotpass.html', form=form, email_sent=session['email_sent'], reset_code=session['reset_code'],
+                           code_validation=session['code_validation'])
 
 @app.route('/logout')
 @login_required

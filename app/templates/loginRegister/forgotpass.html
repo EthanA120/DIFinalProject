@@ -8,21 +8,25 @@
 {% block main %}
     <main>
         <section id="FormSide">
-            <h1>Log In</h1>
+            <h1>Forgot password?</h1>
+            
             <form method="post">
                 {{ form.hidden_tag() }}
 
                 {% if not email_sent %}
+                    <p class="text-start">Enter your Email: </p>
                     {{ form.email(class="form-control mb-3", type="email", placeholder="Email address") }}
-                    <button class="btn btn-primary fs-3" type="submit" name="reset"><i class="fa-solid fa-arrow-rotate-left"></i> Send Email </button>
+                    <button class="btn btn-primary fs-6" type="submit" name="reset"><i class="fa-regular fa-paper-plane"></i> Send Email </button>
                 {% elif email_sent and not code_validation %}
+                    <p class="text-start">Enter the verification code that has been sent to your mail: </p>
                     {{ form.reset_code(class="form-control mb-3", type="text", placeholder="Verification code") }}
-                    <button class="btn btn-primary fs-3" type="submit" name="validation"><i class="fa-solid fa-arrow-rotate-left"></i> Submit code </button>
+                    <button class="btn btn-primary fs-6" type="submit" name="validation"><i class="fa-regular fa-circle-check"></i> Submit code </button>
                 {% endif %}
 
                 {% if email_sent and code_validation %}
+                    <p class="text-start">Enter new password: </p>
                     {{ form.new_pass(class="form-control mb-3", type="password", placeholder="Password") }}
-                    {{ form.submit(value="Submit") }}
+                    {{ form.submit(class="btn btn-primary fs-6", value="Submit") }}
                 {% endif %}
             </form>
         </section>
