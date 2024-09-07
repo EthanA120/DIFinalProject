@@ -31,26 +31,27 @@ def index():
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
-    form = RegisterForm()
+    form = RegisterForm() # specify what form to relate to in this def
 
     if form.validate_on_submit():
-        if not db.session.query(Player).filter_by(email=form.email.data).first():
+        if not db.session.query(Player).filter_by(email=form.email.data).first(): # if email does'nt exist in database:
             try:
-                player = Player(username=form.user_name.data.lower(), email=form.email.data.lower(), password=generate_password_hash(form.password.data), score=Score())
-                player.add_user()
-                return redirect(url_for('login'))
+                player = Player(username=form.user_name.data, email=form.email.data.lower(), password=generate_password_hash(form.password.data), score=Score()) # add player object with the values in registration form
+                player.add_user() # register to database
+                return redirect(url_for('login')) # redirect to url defined in 'login' def
 
-            except exc.IntegrityError:
+            except exc.IntegrityError: # except if one of the values are already exist in the database
                 flash('Username or email are already in use, please try again.', 'warning')
 
-    return render_template('loginRegister/register.html', form=form)
+    return render_template('loginRegister/register.html', form=form) # show html file (location of html file, variables to send to file)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
+    if current_user.is_authenticated: # if already logged on:
+        return redirect(url_for('index')) # redirect to homepage
 
+    # session variables from forget pass def, reset vars when returning to login page
     if 'user_mail' in session:
         session['user_mail'] = None
     if 'email_sent' in session:
