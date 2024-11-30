@@ -1,4 +1,4 @@
-from app.blackjack.models import Blackjack
+from app.blueprints.blackjack.models import Blackjack
 from flask_login import login_required, current_user
 from flask import Blueprint, request, render_template, session
 

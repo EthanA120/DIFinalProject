@@ -22,8 +22,8 @@ login_mngr.login_view = 'login'
 mail = Mail(app)
 
 from app import routes
-from app.tic_tac_toe.routes import tic_tac_toe
-from app.blackjack.routes import blackjack
+from app.blueprints.tic_tac_toe.routes import tic_tac_toe
+from app.blueprints.blackjack.routes import blackjack
 
 app.register_blueprint(tic_tac_toe)
 app.register_blueprint(blackjack)

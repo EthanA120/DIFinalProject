@@ -1,5 +1,5 @@
 from app import db
-from app.tic_tac_toe.models import TicTacToe
+from app.blueprints.tic_tac_toe.models import TicTacToe
 from easyAI import Human_Player, AI_Player, Negamax
 from flask_login import login_required, current_user
 from flask import Blueprint, render_template, request, make_response, session
