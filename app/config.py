@@ -11,6 +11,6 @@ class Config:
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 465
     MAIL_USERNAME = "ethanam120@gmail.com"
-    MAIL_PASSWORD = "kxpu poxx satt kazx"
+    MAIL_PASSWORD = "kxpu poxx satt kazx" # Password created by Google
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True

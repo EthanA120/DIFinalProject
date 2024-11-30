@@ -52,15 +52,11 @@ def login():
         return redirect(url_for('index')) # redirect to homepage
 
     # session variables from forget pass def, reset vars when returning to login page
-    if 'user_mail' in session:
-        session['user_mail'] = None
-    if 'email_sent' in session:
-        session['email_sent'] = False
-    if 'reset_code' in session:
-        session['reset_code'] = None
-    if 'code_validation' in session:
-        session['code_validation'] = None
-        
+    session['user_mail'] = None
+    session['email_sent'] = False
+    session['reset_code'] = None
+    session['code_validation'] = None
+    
     form = LoginForm()
 
     if form.validate_on_submit():
