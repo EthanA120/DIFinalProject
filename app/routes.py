@@ -31,6 +31,9 @@ def index():
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
+    if current_user.is_authenticated: # if already logged on:
+        return redirect(url_for('index')) # redirect to homepage
+    
     form = RegisterForm() # specify what form to relate to in this def
 
     if form.validate_on_submit():
@@ -51,11 +54,12 @@ def login():
     if current_user.is_authenticated: # if already logged on:
         return redirect(url_for('index')) # redirect to homepage
 
-    # session variables from forget pass def, reset vars when returning to login page
-    session['user_mail'] = None
-    session['email_sent'] = False
-    session['reset_code'] = None
+    # session variables from forget pass def, reset vars when returning to login page after reseting password
     session['code_validation'] = None
+    if 'user_mail' not in session:
+        session['user_mail'] = None
+        session['email_sent'] = False
+        session['reset_code'] = None
     
     form = LoginForm()
 
@@ -77,20 +81,19 @@ def login():
 def forgotpass():
     form = ForgotPassForm()
 
-    if 'reset' in request.form:
+    if 'reset' in request.form: # html submit name of email form
         if db.session.query(Player).filter_by(email=form.email.data.lower()).first():
             session['user_mail'] = form.email.data.lower()
             session['reset_code'] = str(randint(100000, 1000000))
+            printr(session['reset_code'], 'OrangeRed')
             msg = Message("Reset password", sender="noreply@demo.com", recipients=["EthanA120@Gmail.com"])
             msg.body = f"Use this code to reset your password: {session['reset_code']}"
             mail.send(msg)
             session['email_sent'] = True
         else:
             flash('Email does\'nt exist', 'warning')
-            
-    printr(session['reset_code'], 'OrangeRed')
     
-    if 'validation' in request.form:
+    if 'validation' in request.form: # html submit name of reset code validation form
         if form.reset_code.data == session['reset_code']:
             session['code_validation'] = form.reset_code.data
         else:
@@ -100,6 +103,9 @@ def forgotpass():
         rs_user = db.session.query(Player).filter_by(email=session['user_mail']).first()
         rs_user.password = generate_password_hash(form.new_pass.data)
         db.session.commit()
+        session['user_mail'] = None
+        session['email_sent'] = False
+        session['reset_code'] = None
         return redirect(url_for('login'))
 
     return render_template('loginRegister/forgotpass.html', form=form, email_sent=session['email_sent'], reset_code=session['reset_code'],
