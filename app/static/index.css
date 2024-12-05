@@ -1,0 +1,13 @@
+.card{
+    min-width: 300px !important;
+    min-height: 350px !important;
+    width: 19%;
+    margin: 1%;
+    padding: 15px;
+}
+
+.card-img-top {
+    object-fit: cover;
+    -webkit-box-shadow: 0px 0px 15px -8px #000000;
+    box-shadow: 0px 0px 15px -8px #000000;
+}
