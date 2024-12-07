@@ -33,8 +33,8 @@
                         </div>
                         <div class="navbar-nav">
                             {% if current_user.is_anonymous %}
-                                <a class="nav-link {% if endpoint[-1] == "login" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login') }}">Login</a>
-                                <a class="nav-link {% if endpoint[-1] == "register" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('register') }}">Register</a>
+                                <a class="nav-link {% if endpoint[-1] == "login" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login_register.login') }}">Login</a>
+                                <a class="nav-link {% if endpoint[-1] == "register" %}active fw-bold{% endif %}" aria-current="page" href="{{ url_for('login_register.register') }}">Register</a>
 
                             {% else %}
                                 <div class="nav-item dropdown pe-5">
@@ -42,7 +42,7 @@
                                     <ul class="dropdown-menu dropdown-menu-end">
                                       <li><a class="dropdown-item" href="{{ url_for('user_page.profile') }}">My Profile</a></li>
                                       <li><hr class="dropdown-divider"></li>
-                                      <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                                      <li><a class="dropdown-item" href="{{ url_for('login_register.logout') }}">Logout</a></li>
                                     </ul>
                                 </div>
                             {% endif %}

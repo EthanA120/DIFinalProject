@@ -1,5 +1,6 @@
-from app import db
+from app import app, db
 from flask_login import UserMixin
+from colorich import printr
 
 
 class Player(UserMixin, db.Model):
@@ -7,11 +8,16 @@ class Player(UserMixin, db.Model):
     username = db.Column(db.String(20), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
+    rank = db.Column(db.String(20), default="member")
     score = db.relationship("Score", back_populates="player", uselist=False)
 
     def add_user(self):
         db.session.add(self)
         db.session.commit()
+        
+    # def delete_user(self):
+    #     db.session.delete(self)
+    #     db.session.commit()
 
 
 class Score(db.Model):
@@ -34,5 +40,6 @@ class Game(db.Model):
 
 
 # db.drop_all()
-db.create_all()
-db.session.commit()
+with app.app_context():
+    db.create_all()
+    db.session.commit()

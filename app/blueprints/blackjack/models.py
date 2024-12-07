@@ -1,6 +1,6 @@
 from app import db
 
-from app.routes import current_user
+from app.blueprints.login_register.routes import current_user
 from random import choice
 
 

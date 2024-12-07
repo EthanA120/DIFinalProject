@@ -1,5 +1,5 @@
 from easyAI import TwoPlayerGame
-from app.routes import current_user
+from app.blueprints.login_register.routes import current_user
 
 
 class TicTacToe(TwoPlayerGame):

@@ -19,7 +19,7 @@
                         {{ form.remember_me(type="checkbox") }}
                         <label for="rememberMe">Remember me</label>
                     </span>
-                    <a href="{{ url_for('forgotpass') }}" style="text-decoration: none;">forgot password?</a>
+                    <a href="{{ url_for('login_register.forgotpass') }}" style="text-decoration: none;">forgot password?</a>
                 </div>
                 {{ form.submit(value="Login") }}
             </form>
@@ -29,7 +29,7 @@
             <i class="fas fa-user-plus"></i>
             <h1>Hello, freind!</h1>
             <h2>Sign up now and enjoy our games for free</h2>
-            <a href="{{ url_for('register') }}">Register <i class="far fa-arrow-alt-circle-right"></i></a>
+            <a href="{{ url_for('login_register.register') }}">Register <i class="far fa-arrow-alt-circle-right"></i></a>
         </section>
     </main>
 {% endblock %}
