@@ -3,7 +3,7 @@ from app import mail, login_mngr
 from app.forms import RegisterForm, LoginForm, ForgotPassForm
 from app.models import db, Player, Score
 from flask import render_template, redirect, url_for, flash, session, request
-from werkzeug.security import check_password_hash, generate_password_hash
+from argon2 import PasswordHasher, exceptions
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_mail import Message
 from random import randint
@@ -11,6 +11,7 @@ from colorich import printr
 from flask import Blueprint, render_template, request, session
 
 login_register = Blueprint('login_register', __name__)
+phash = PasswordHasher()
 
 @login_mngr.user_loader
 def load_user(userid):
@@ -27,7 +28,7 @@ def register():
     if form.validate_on_submit():
         if not db.session.query(Player).filter_by(email=form.email.data).first(): # if email does'nt exist in database:
             try:
-                player = Player(username=form.user_name.data, email=form.email.data.lower(), password=generate_password_hash(form.password.data), score=Score()) # add player object with the values in registration form
+                player = Player(username=form.user_name.data, email=form.email.data.lower(), password=phash.hash(form.password.data), score=Score()) # add player object with the values in registration form
                 player.add_user() # register to database
                 return redirect(url_for('login_register.login')) # redirect to url defined in 'login' def
 
@@ -55,9 +56,19 @@ def login():
         user = db.session.query(Player).filter_by(email=form.email.data.lower()).first()
         print(form.email.data.lower())
 
-        if user is None or not check_password_hash(user.password, form.password.data):
-            flash('Invalid username or password.', 'warning')
+        if user is None:
+            printr("User doesn't exist", "Red")
+            flash('Invalid username or password.', 'warning')  # Consistent message for both cases
             return redirect(url_for('login_register.login'))
+
+        try:
+            phash.verify(user.password, form.password.data)  # Argon2 verification
+        except exceptions.VerifyMismatchError:
+            printr("Password doesn't match", "Red")
+            flash('Invalid username or password.', 'warning')  # Consistent message
+            return redirect(url_for('login_register.login'))  
+        except exceptions.InvalidHashError:
+            printr("Hashed password doesn't exist, please hash it again", "OrangeRed")
 
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('index'))
@@ -89,7 +100,7 @@ def forgotpass():
             
     if form.submit.data and session['reset_code'] and session['code_validation']:
         rs_user = db.session.query(Player).filter_by(email=session['user_mail']).first()
-        rs_user.password = generate_password_hash(form.new_pass.data)
+        rs_user.password = phash.hash(form.new_pass.data)
         db.session.commit()
         session['user_mail'] = None
         session['email_sent'] = False

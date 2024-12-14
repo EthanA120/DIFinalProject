@@ -2,6 +2,7 @@ from flask import Flask
 from app.config import Config, metadata
 from flask_migrate import Migrate
 from flask_admin import Admin
+from app.blueprints.admin.models import AdminIndex
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
@@ -16,7 +17,7 @@ app.config.from_object(Config)
 bootstrap = Bootstrap5(app)
 db = SQLAlchemy(app, metadata=metadata)
 migrate = Migrate(app, db, render_as_batch=True)
-admin = Admin(app, name="Ethan")
+admin = Admin(app, name="Admin", index_view=AdminIndex())
 
 login_mngr = LoginManager(app)
 login_mngr.login_view = 'login_register.login'
